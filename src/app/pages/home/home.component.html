@@ -1,0 +1,8 @@
+<app-product-list
+  [products]="(products$ | async) ?? []"
+  [cartProductIds]="cartProductIds"
+  (productAddedToCart)="onProductAddedToCart($event)"
+  (productRemovedFromCart)="onProductRemovedFromCart($event)">
+</app-product-list>
+
+

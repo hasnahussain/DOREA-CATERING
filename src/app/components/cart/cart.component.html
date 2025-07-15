@@ -1,0 +1,23 @@
+<div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+  <button
+    (click)="navigateToCheckout()"
+    class="text-white rounded-full p-4 shadow-lg transition-colors relative"
+    [class.animate-pulse]="(cartCount ?? 0) > 0"
+    style="background-color: #843A6B;"
+    onmouseover="this.style.backgroundColor='#6b2f57'"
+    onmouseout="this.style.backgroundColor='#843A6B'"
+  >
+    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M3 3h2l.4 2M7 13h10l4-8H5.4m2.6 8L6 5H3m4 8a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z">
+      </path>
+    </svg>
+
+    <div
+      *ngIf="(cartCount ?? 0) > 0"
+      class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold"
+    >
+      {{ cartCount ?? 0 }}
+    </div>
+  </button>
+</div>

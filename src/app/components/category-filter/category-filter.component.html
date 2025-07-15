@@ -1,0 +1,31 @@
+ <div class="bg-white border-b border-gray-200">
+  <div class="flex justify-center space-x-1 px-4 py-2">
+    <button
+      *ngFor="let category of categories"
+      (click)="selectCategory(category.key)"
+      [class]="'px-6 py-2 text-sm font-medium rounded-lg transition-colors ' +
+               (selectedCategory === category.key ?
+               'bg-[#843A6B] text-white' :
+               'bg-gray-100 text-gray-700 hover:bg-gray-200')"
+    >
+      {{ category.name }}
+    </button>
+  </div>
+
+  <div class="px-4 py-3">
+    <div class="flex justify-center flex-wrap gap-2 overflow-x-auto scrollbar-hide">
+      <button
+        *ngFor="let subcategory of subcategories"
+        (click)="selectSubcategory(subcategory)"
+        [class]="'flex-shrink-0 px-4 py-2 text-sm font-medium rounded-full border transition-colors ' +
+                 (selectedSubcategory === subcategory ?
+                 'bg-[#f3e6f0] border-[#843A6B] text-[#843A6B]' :
+                 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50')"
+      >
+        {{ subcategory }}
+      </button>
+    </div>
+  </div> 
+  
+  
+</div> 

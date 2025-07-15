@@ -1,0 +1,176 @@
+<div class="max-w-screen-lg w-full mx-auto p-3 sm:p-4">
+  <!-- Back Button -->
+  <button
+    (click)="goBack()"
+    class="mb-4 inline-flex items-center text-[#843A6B] hover:text-[#6b2f57] font-medium text-sm"
+  >
+    <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+    Back
+  </button>
+
+  <div class="flex flex-col gap-4 sm:gap-6">
+    <!-- Order Summary -->
+    <div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <h2 class="text-lg sm:text-xl font-bold mb-4">Order Summary</h2>
+
+      <div *ngIf="cartItems.length === 0" class="text-center py-6 sm:py-8">
+        <p class="text-gray-500 mb-4">Your cart is empty</p>
+        <button
+          (click)="goHome()"
+          class="bg-[#F7931E] text-[#843A6B] font-semibold px-6 py-2 rounded-lg hover:bg-[#e47e00] transition-colors"
+        >
+          Continue Shopping
+        </button>
+      </div>
+
+      <div *ngFor="let item of cartItems" class="py-3 border-b">
+        <div class="grid grid-cols-[auto_1fr_auto] items-start gap-3 sm:gap-4">
+          <img
+            [src]="item.product.image"
+            [alt]="item.product.name"
+            class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg"
+            (error)="onImageError($event)"
+          >
+
+          <div class="min-w-0">
+            <h3 class="font-medium text-sm sm:text-base truncate">{{ item.product.name }}</h3>
+            <p class="text-xs sm:text-sm text-gray-500 truncate mb-2">{{ item.product.subcategory }}</p>
+
+            <div class="flex items-center justify-between sm:justify-start">
+              <div class="flex items-center space-x-1 sm:space-x-2">
+                <button
+                  (click)="decreaseQuantity(item.product.id)"
+                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-200 hover:bg-gray-300 active:bg-gray-400 flex items-center justify-center"
+                >
+                  <span class="text-sm font-medium">-</span>
+                </button>
+                <span class="w-6 sm:w-8 text-center text-sm font-medium">{{ item.quantity }}</span>
+                <button
+                  (click)="increaseQuantity(item.product.id)"
+                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-200 hover:bg-gray-300 active:bg-gray-400 flex items-center justify-center"
+                >
+                  <span class="text-sm font-medium">+</span>
+                </button>
+              </div>
+
+              <button
+                (click)="removeItem(item.product.id)"
+                class="sm:hidden ml-4 w-8 h-8 bg-red-50 hover:bg-red-100 active:bg-red-200 rounded-full flex items-center justify-center text-red-500 hover:text-red-700 active:text-red-800"
+                title="Remove item"
+              >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button
+            (click)="removeItem(item.product.id)"
+            class="hidden sm:flex w-8 h-8 bg-red-50 hover:bg-red-100 active:bg-red-200 rounded-full items-center justify-center text-red-500 hover:text-red-700 active:text-red-800"
+            title="Remove item"
+          >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-4 text-right">
+        <p class="text-base sm:text-lg font-semibold">Total Items: {{ getTotalItems() }}</p>
+      </div>
+    </div>
+
+    <!-- Event Details Form -->
+    <div *ngIf="cartItems.length > 0" class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <h2 class="text-lg sm:text-xl font-bold mb-4">Event Details</h2>
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+        <div class="space-y-4">
+         
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="name">Name <span class="text-red-500">*</span></label>
+              <input id="name" type="text" formControlName="name" placeholder="Enter your name"
+                class="w-full px-3 py-2.5 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]" />
+            </div>
+            <div>
+              <label for="place">Place <span class="text-red-500">*</span></label>
+              <input id="place" type="text" formControlName="place" placeholder="Enter place"
+                class="w-full px-3 py-2.5 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]" />
+            </div>
+          </div>
+
+         
+          <div>
+            <label for="venue">Venue</label>
+            <input id="venue" type="text" formControlName="venue" placeholder="e.g., Banquet Hall"
+              class="w-full px-3 py-2.5 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]" />
+          </div>
+
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="personCount">Number of Persons <span class="text-red-500">*</span></label>
+              <input id="personCount" type="number" formControlName="personCount" min="1"
+                class="w-full px-3 py-2.5 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]" />
+            </div>
+            <div>
+              <label for="eventType">Event Type <span class="text-red-500">*</span></label>
+              <select id="eventType" formControlName="eventType"
+                class="w-full px-3 py-2.5 text-sm border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]">
+                <option value="" disabled>Select Event Type</option>
+                <option *ngFor="let type of ['Wedding','Engagement', 'Birthday', 'Corporate','House Warming','Baptism', 'Other']" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+          </div>
+
+         
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="eventDate">Event Date <span class="text-red-500">*</span></label>
+              <input id="eventDate" type="date" formControlName="eventDate" [min]="minDate"
+                class="w-full px-3 py-2.5 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]" />
+            </div>
+            <div>
+              <label for="eventTime">Event Time <span class="text-red-500">*</span></label>
+              <input id="eventTime" type="time" formControlName="eventTime"
+                class="w-full px-3 py-2.5 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]" />
+            </div>
+          </div>
+
+          
+          <div>
+            <label for="scheduleType">Schedule Type <span class="text-red-500">*</span></label>
+            <select id="scheduleType" formControlName="scheduleType"
+              class="w-full px-3 py-2.5 text-sm border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]">
+              <option value="" disabled>Select Schedule Type</option>
+              <option *ngFor="let type of ['Breakfast', 'Lunch', 'Dinner', 'Snacks']" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+
+          
+          <div>
+            <label for="orderNote">Additional Notes</label>
+            <textarea id="orderNote" formControlName="orderNote" rows="3"
+              class="w-full px-3 py-2.5 text-sm border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-[#F7931E] focus:border-[#F7931E]"
+              placeholder="Any specific requests or details..."></textarea>
+          </div>
+        </div>
+
+       
+        <div class="mt-6 text-right">
+          <button type="submit"
+            [disabled]="orderForm.invalid || cartItems.length === 0"
+            class="w-40 bg-[#F7931E] text-[#843A6B] py-2 rounded-md font-semibold text-sm hover:bg-[#e47e00] active:bg-[#cc6d00] disabled:opacity-50 disabled:cursor-not-allowed">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+.logo-img {
+    height: 350px;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  @media (max-width: 767px) {
+    .logo-img {
+      height: 200px; /* Slightly smaller logo on mobile for better layout */
+    }
+  }
+  

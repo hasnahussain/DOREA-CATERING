@@ -1,0 +1,54 @@
+<div class="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 lg:grid-cols-4" *ngIf="products && products.length > 0">
+  <div
+    *ngFor="let product of products"
+    [ngClass]="isInCart(product.id) ? 'border-2 border-[#843A6B] shadow-md' : 'shadow-sm'"
+    class="bg-white rounded-xl hover:shadow-md transition-shadow overflow-hidden"
+  >
+    <!-- Image -->
+    <div class="h-40 bg-gray-100 relative">
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+        class="w-full h-full object-cover rounded-t-xl"
+        (error)="onImageError($event)"
+      >
+    </div>
+
+    <!-- Product Info -->
+    <div class="p-2 flex flex-col justify-between">
+      <h3 class="font-medium text-sm text-gray-800 leading-snug line-clamp-2 h-10 overflow-hidden">
+        {{ product.name }}
+      </h3>
+
+      <!-- If Already Added -->
+      <ng-container *ngIf="isInCart(product.id); else addButton">
+        <div class="mt-2 flex justify-between items-center">
+          <span class="text-[#843A6B] text-xs bg-[#f3e6f0] px-2 py-0.5 rounded-full font-semibold">✔ Added</span>
+          <button
+            (click)="removeFromCart(product.id)"
+            class="text-red-500 text-sm hover:text-red-700 font-bold"
+            title="Remove"
+          >
+            &times;
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- Add Button if Not in Cart -->
+      <ng-template #addButton>
+        <button
+          (click)="addToCart(product)"
+          class="mt-2 w-full bg-[#843A6B] text-white py-1.5 px-3 rounded-md text-xs font-semibold hover:bg-[#6b2f57] focus:outline-none focus:ring-1 focus:ring-[#a45b8f] transition-all"
+        >
+          + Add to Cart
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- Empty State -->
+<div *ngIf="!products || products.length === 0" class="text-center py-12">
+  <p class="text-gray-500 text-base">No products found</p>
+  <p class="text-gray-400 text-sm mt-1">Try adjusting your search or filters</p>
+</div>
